@@ -12,7 +12,7 @@ define(['../libraries/AdaptMock.js', 'jquery', 'contextFactory'], function(Adapt
 
         it('should register', function(done) {
             var context = createContext();
-            context(['coreJS/adapt', 'adapt-contrib-callout'], function (Adapt, plugin) {
+            context(['coreJS/adapt', 'adapt-callout'], function (Adapt, plugin) {
                 expect(Adapt.register.called).to.be(true);
                 done();
             });
