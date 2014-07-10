@@ -2,7 +2,7 @@
     "_id":"c-05",
     "_parentId":"b-05",
     "_type":"component",
-    "_component":"text",
+    "_component":"callout",
     "_classes":"",
     "_layout":"left",
     "title":"Our first look at a component",
