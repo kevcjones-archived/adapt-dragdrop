@@ -1,5 +1,5 @@
 {
-  "name": "adapt-contrib-callout",
+  "name": "adapt-callout",
   "version": "0.0.1",
   "description": "Description of your component",
   "main": "",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/adaptlearning/adapt-callout.git"
+    "url": "https://github.com/KevCJones/adapt-callout.git"
   },
   "author": "AdaptLearning",
   "license": "GPL v3",
   "bugs": {
-    "url": "https://github.com/adaptlearning/adapt-contrib-callout/issues"
+    "url": "https://github.com/KevCJones/adapt-callout/issues"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
