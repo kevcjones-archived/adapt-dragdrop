@@ -1,0 +1,15 @@
+{
+  "name": "adapt-contrib-callout",
+  "version": "0.0.1",
+  "homepage": "https://github.com/KevCJones/adapt-contrib-callout",
+  "authors": [
+    "Kevin Jones <him@kevincjones.co.uk>"
+  ],
+  "description": "Callouts objects show when you touch text, images or invisible hotspots. Callouts can be configured to be local to the text you touched OR full screen if they need to be",
+  "main": "/js/adapt-contrib-callout.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-component"
+  ],
+  "license": "GPLv3"
+}
