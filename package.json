@@ -1,19 +1,19 @@
 {
-  "name": "adapt-callout",
+  "name": "adapt-dragdrop",
   "version": "0.0.1",
-  "description": "Description of your component",
+  "description": "Pulling in a drag and drop interactive from the older elearning content we used to make... and improving it since it was never responsive",
   "main": "",
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/KevCJones/adapt-callout.git"
+    "url": "https://github.com/KevCJones/adapt-dragdrop.git"
   },
   "author": "AdaptLearning",
   "license": "GPL v3",
   "bugs": {
-    "url": "https://github.com/KevCJones/adapt-callout/issues"
+    "url": "https://github.com/KevCJones/adapt-dragdrop/issues"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

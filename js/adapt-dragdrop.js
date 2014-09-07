@@ -6,7 +6,7 @@
 
 define(["coreViews/componentView", "coreJS/adapt"], function(ComponentView, Adapt) {
 
-    var Callout = ComponentView.extend({
+    var DragDrop = ComponentView.extend({
         
         postRender: function() {
             console.log("rendering");
@@ -26,6 +26,6 @@ define(["coreViews/componentView", "coreJS/adapt"], function(ComponentView, Adap
         
     });
     
-    Adapt.register("callout", Callout);
+    Adapt.register("dragdrop", DragDrop);
     
 });

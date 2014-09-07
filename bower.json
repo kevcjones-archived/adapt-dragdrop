@@ -1,15 +1,17 @@
 {
-  "name": "adapt-callout",
+  "name": "adapt-dragdrop",
   "version": "0.0.1",
-  "homepage": "https://github.com/KevCJones/adapt-callout",
+  "repository": "https://github.com/KevCJones/adapt-dragdrop.git",
+  "homepage": "https://github.com/cajones/adapt-dragdrop",
   "authors": [
     "Kevin Jones <him@kevincjones.co.uk>"
   ],
-  "description": "Callouts objects show when you touch text, images or invisible hotspots. Callouts can be configured to be local to the text you touched OR full screen if they need to be",
-  "main": "/js/adapt-callout.js",
+  "description": "Drag Drop description here",
+  "main": "/js/adapt-dragdrop.js",
   "keywords": [
     "adapt-plugin",
-    "adapt-component"
+    "adapt-component",
+    "adapt-dragdrop"
   ],
   "license": "GPLv3"
 }
