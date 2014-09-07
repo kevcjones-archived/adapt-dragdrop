@@ -7,6 +7,15 @@
 define(["coreViews/componentView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.touch-punch.js"], function(ComponentView, Adapt, JQueryUI, touchPunch) {
 
     var DragDrop = ComponentView.extend({
+
+        events: {
+            "click .dragdrop-widget .button.submit": "onSubmitClicked",
+            "click .dragdrop-widget .button.reset": "onResetClicked",
+            "click .dragdrop-widget .button.model": "onModelAnswerClicked",
+            "click .dragdrop-widget .button.user": "onUserAnswerClicked"
+        },
+
+
         
         postRender: function() {
             console.log("rendering");
@@ -22,6 +31,22 @@ define(["coreViews/componentView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.
             // Use this to set the model status to complete.
             // This can be used with inview or when the model is set to complete/the question has been answered.
             this.setCompletionStatus();
+        },
+
+        onResetClicked: function(event) {
+            event.preventDefault();
+        },
+
+        onSubmitClicked: function(event) {
+           event.preventDefault();
+        },
+
+        onModelAnswerShown: function() {
+            event.preventDefault();
+        },
+
+        onUserAnswerShown: function(event) {
+           event.preventDefault();
         }
         
     });
