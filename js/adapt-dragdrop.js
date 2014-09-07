@@ -4,9 +4,10 @@
 * Maintainers - Kevin Jones <him@kevincjones.co.uk>
 */
 
-define(["coreViews/componentView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.touch-punch.js"], function(ComponentView, Adapt, JQueryUI, touchPunch) {
+define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.touch-punch.js"], function(QuestionView, Adapt, JQueryUI, touchPunch) {
 
-    var DragDrop = ComponentView.extend({
+
+    var DragDrop = QuestionView.extend({
 
         events: {
             "click .dragdrop-widget .button.submit": "onSubmitClicked",
