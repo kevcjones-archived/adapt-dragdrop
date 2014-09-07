@@ -1,7 +1,7 @@
 {
   "name": "adapt-dragdrop",
   "version": "0.0.1",
-  "repository": "https://github.com/KevCJones/adapt-dragdrop.git",
+  "repository": "git://github.com/KevCJones/adapt-dragdrop.git",
   "homepage": "https://github.com/cajones/adapt-dragdrop",
   "authors": [
     "Kevin Jones <him@kevincjones.co.uk>"
