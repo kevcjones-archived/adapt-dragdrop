@@ -4,7 +4,7 @@
 * Maintainers - Kevin Jones <him@kevincjones.co.uk>
 */
 
-define(["coreViews/componentView", "coreJS/adapt"], function(ComponentView, Adapt) {
+define(["coreViews/componentView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.touch-punch.js"], function(ComponentView, Adapt, JQueryUI, touchPunch) {
 
     var DragDrop = ComponentView.extend({
         
