@@ -10,6 +10,7 @@
 	}
 }(function( $ ) {
 
+
 	var DragDropDraggerFactory = function(args)
     {
         var ddd                 = new DragDropDragger();
@@ -29,7 +30,7 @@
             //poll for something that isn't 0,0
             var intID  = setInterval(function(){
 
-                log('refresh polling for layout!');
+                console.log('refresh polling for layout!');
                 ddd.orig_left           = ddd.$target.position().left;
                 ddd.orig_top            = ddd.$target.position().top;
                 if((ddd.orig_left != 0) && (ddd.orig_top != 0))
@@ -306,7 +307,7 @@
 
         this.reveal = function()
         {
-            log("Revealing the dropzone "+ this.targetId);
+            console.log("Revealing the dropzone "+ this.targetId);
             var self = this;
             var placed = [];
 
@@ -336,7 +337,7 @@
 
                 self.setCorrect();
 
-                log("Correct Picked "+correctInstance.tgtId);   
+                console.log("Correct Picked "+correctInstance.tgtId);   
                 //NB : later i'll need to detect placed in case multiple supported answers
                 foundCorrectDragger = true;
 
@@ -501,15 +502,15 @@
 
         });
 
-        if(enableSubmit && !forceSOff)
+        if(enableSubmit && !forceSOff && this.$submitButton)
             this.$submitButton.removeClass(DragDropController.INACTIVE_BUTTON_CLASS);
-        else
+        else if(this.$submitButton)
             this.$submitButton.addClass(DragDropController.INACTIVE_BUTTON_CLASS);
 
 
-        if(!forceRevOff)
+        if(!forceRevOff && this.$revealButton)
             this.$revealButton.removeClass(DragDropController.INACTIVE_BUTTON_CLASS);
-        else
+        else if (this.$revealButton)
             this.$revealButton.addClass(DragDropController.INACTIVE_BUTTON_CLASS);
 
     };
@@ -525,7 +526,7 @@
     {
         var self = this;
         if(self.isLocked) return;
-        log('Clicked reset');
+        console.log('Clicked reset');
         $.each(self.allDraggers,function(){
             this.reset();
         });
@@ -542,7 +543,7 @@
 
         var self = this;
         if(self.isLocked) return;
-        log('Clicked reveal');
+        console.log('Clicked reveal');
         $.each(self.allZones,function(){
             this.reveal();
         });
@@ -555,7 +556,7 @@
     {
         var self = this;
         if(self.isLocked) return;
-        log('Clicked Submit');
+        console.log('Clicked Submit');
         $.each(self.allZones,function(){
             this.submit();
         });

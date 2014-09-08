@@ -55,6 +55,8 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             var draggerDictionary = {};
             var masterDropList = [];
 
+            this.model.set("_isComplete",false);
+
             var items = this.model.get("_items");
             _.each(items,function(item){
                 if(item.type == "dragger")
@@ -84,7 +86,7 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
 
             DragDropHelper.ControllerFactory.INACTIVE_BUTTON_CLASS = "inactive-but";
 
-            var ddController = DragDropHelper.ControllerFactory({
+            this.ddController = DragDropHelper.ControllerFactory({
                 $resetButton : null,
                 $revealButton: null,
                 $submitButton: null,
@@ -146,6 +148,7 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
         onResetClicked: function(event) {
             if (this.canReset()) {
                 QuestionView.prototype.onResetClicked.apply(this, arguments);
+                this.ddController.reset();
             } else {
                 if (event) {
                     event.preventDefault();
@@ -161,6 +164,7 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             QuestionView.prototype.onSubmitClicked.apply(this, arguments);
 
             if (this.canSubmit()) {
+               this.ddController.submit();
                this.setResetButtonEnabled(!this.model.get('_isComplete'));
             }
         },
