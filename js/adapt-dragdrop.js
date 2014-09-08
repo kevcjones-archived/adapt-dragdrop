@@ -4,7 +4,7 @@
 * Maintainers - Kevin Jones <him@kevincjones.co.uk>
 */
 
-define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.touch-punch.js"], function(QuestionView, Adapt, JQueryUI, touchPunch) {
+define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.touch-punch.js",'./dragdrop.js'], function(QuestionView, Adapt, JQueryUI, touchPunch,DragDropHelper) {
 
 
     var DragDrop = QuestionView.extend({
@@ -43,6 +43,54 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             //HOOK UP
             this.onScreenSizeChanged();
 
+            DragDropHelper.Dragger.DEFAULT_BOUNDS = "#wrapper";
+            DragDropHelper.Dragger.DEFAULT_DRAGGING_CLASS = "ddd-dragging-s1";
+            DragDropHelper.Dragger.DEFAULT_PLACED_CLASS = "ddd-placed-s1";
+
+            DragDropHelper.DropZone.DEFAULT_NEUTRAL_CLASS =  "neutraldropzone-s1";
+            DragDropHelper.DropZone.DEFAULT_CORRECT_CLASS =  "correctdropzone-s1";
+            DragDropHelper.DropZone.DEFAULT_INCORRECT_CLASS =  "incorrectdropzone-s1";
+
+            var masterDragList = [];
+            var draggerDictionary = {};
+            var masterDropList = [];
+
+            var items = this.model.get("_items");
+            _.each(items,function(item){
+                if(item.type == "dragger")
+                {
+                    masterDragList.push(DragDropHelper.DraggerFactory({tgtId:'#'+item.id}));
+                    draggerDictionary[item.id] = masterDragList[masterDragList.length-1];
+                }
+            });
+
+
+            _.each(items,function(item){
+                if(item.type == "dropzone")
+                {
+                    item.correctDraggers = [];
+
+                    _.each(item.correct,function(correct){
+                        item.correctDraggers.push(draggerDictionary[correct]);
+                    });
+
+                    masterDropList.push(DragDropHelper.DropZoneFactory({
+                        targetId:'#'+item.id,
+                        acceptedDraggers : masterDragList,
+                        correctDraggers : item.correctDraggers
+                    }));
+                }
+            });
+
+            DragDropHelper.ControllerFactory.INACTIVE_BUTTON_CLASS = "inactive-but";
+
+            var ddController = DragDropHelper.ControllerFactory({
+                $resetButton : null,
+                $revealButton: null,
+                $submitButton: null,
+                dropzones :masterDropList,
+                draggers: masterDragList
+            });     
 
             // Use this to set the model status to ready. 
             // It should be used when telling Adapt that this view is completely loaded.
@@ -58,8 +106,16 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             // if (Adapt.device.screenSize != 'large') {
             //     this.replaceWithNarrative();
             // }
-            //  var h = $('.dragdrop-background').height();
-            // $('.draggable-content').css("height",h+"px");
+            var h = $(this.el).find('.dragdrop-background').height();
+            $(this.el).find('.dragdrop-container').css("height",h+"px");
+
+            //font scale
+            var oWidth = this.model.get("_background").originalWidth;
+            var w = $(this.el).find('.dragdrop-background').width();
+            var scale = (100.0*(w/oWidth))+'%';
+            $(this.el).find('.dragdrop-container').css("font-size",scale);
+
+
 
         },
 
