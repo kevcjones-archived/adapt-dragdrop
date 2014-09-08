@@ -2,7 +2,23 @@
     {{> component this}}
    <div class="dragdrop-widget component-widget {{#unless _isEnabled}} disabled {{#if _isComplete}} complete submitted user {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
     	
-    	<p>TO DO create dropzone stuff here</p>
+    	<div class="dragdrop-container">
+    		<img class="dragdrop-background" src="{{_background.image}}" width="100%" height="auto">
+    		<div class="draggable-content">
+    			{{#each _items}}
+    				<div id='{{id}}' 
+                    class='dragdrop-item {{type}} {{class}}' 
+                    style='left:{{_left}};
+                    top:{{_top}};
+                    width:{{_width}};
+                    height:{{_height}};
+                    background-image:url({{image}});'>
+                    {{{text}}}
+                </div>
+    			{{/each}}
+    		</div>
+    	</div>
+
         <div class="buttons">
             {{> buttons this}}
         </div>
