@@ -6,6 +6,7 @@
 
         .dragdrop-container {		
         	background-color:#aaa;
+            position:relative;
         	
         	.draggable-content{
         		position:absolute;
@@ -17,12 +18,12 @@
 
 	        	.dragdrop-item {
 	        		position:absolute;
+                    background-repeat:no-repeat;
+
 
 	        		&.dragger {
-	        			background-color:red;
 	        		}
 	        		&.dropzone {
-	        			background-color:blue;
 	        		}
 	        	}
 	        }

@@ -16,7 +16,23 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             "click .dragdrop-widget .button.user": "onUserAnswerClicked"
         },
 
+        preRender: function() {
+            console.log("precalculating");
 
+            var oWidth = this.model.get("_background").originalWidth;
+            var oHeight = this.model.get("_background").originalHeight;
+            var items = this.model.get("_items");
+            _.each(items,function(item){
+                item._width = ((item.width/oWidth)*100.0) +"%";
+                item._height = ((item.height/oHeight)*100.0)+"%";
+                item._left = ((item.left/oWidth)*100.0) +"%";
+                item._top = ((item.top/oHeight)*100.0)+"%";
+            });
+
+            this.listenTo(Adapt, 'device:resize', this.onScreenSizeChanged);
+
+           
+        },
         
         postRender: function() {
             console.log("rendering");
@@ -25,6 +41,7 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             // Both of the following methods need to be called inside your view.
 
             //HOOK UP
+            this.onScreenSizeChanged();
 
 
             // Use this to set the model status to ready. 
@@ -35,6 +52,15 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             // Use this to set the model status to complete.
             // This can be used with inview or when the model is set to complete/the question has been answered.
             this.setCompletionStatus();
+        },
+
+        onScreenSizeChanged: function() {
+            // if (Adapt.device.screenSize != 'large') {
+            //     this.replaceWithNarrative();
+            // }
+            //  var h = $('.dragdrop-background').height();
+            // $('.draggable-content').css("height",h+"px");
+
         },
 
         resetQuestion: function(properties) {
