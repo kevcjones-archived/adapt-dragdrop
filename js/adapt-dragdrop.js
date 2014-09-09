@@ -16,7 +16,16 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             "click .dragdrop-widget .button.user": "onUserAnswerClicked"
         },
 
+        initialize:function() {
+            QuestionView.prototype.initialize.apply(this, arguments);
+
+            this.model.set('_selectedItems', []);
+        },
+
         preRender: function() {
+
+            QuestionView.prototype.preRender.apply(this);
+
             console.log("precalculating");
 
             var oWidth = this.model.get("_background").originalWidth;
@@ -35,6 +44,8 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
         },
         
         postRender: function() {
+            QuestionView.prototype.postRender.apply(this);
+
             console.log("rendering");
 
             // IMPORTANT! 
@@ -115,7 +126,6 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             var h = $(this.el).find('.dragdrop-background').height();
             $(this.el).find('.dragdrop-container').css("height",h+"px");
 
-            //font scale
             var oWidth = this.model.get("_background").originalWidth;
             var w = $(this.el).find('.dragdrop-background').width();
             var scale = (100.0*(w/oWidth))+'%';
@@ -125,24 +135,16 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
 
         },
 
-        resetQuestion: function(properties) {
-            QuestionView.prototype.resetQuestion.apply(this, arguments);
-
-            //TODO reset Drag and Dropper
-
-            // _.each(this.model.get('_items'), function(item) {
-            //     item.selected = false;
-            // }, this);
-        },
 
         canSubmit: function() {
             //TODO when we have the drag drop code in we want to disable until they play all
-            return true;
+            return this.ddController.canSubmit();
         },
 
         canReset: function() {
             return !this.$('.mcq-widget, .button.reset').hasClass('disabled');
         },
+
 
         storeUserAnswer:function() {
             //TODO set useranswer to what the user put when he pressed submit
@@ -160,15 +162,35 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             }
         },
 
+        forEachAnswer: function(callback) {
+            this.model.set('_isAtLeastOneCorrectSelection', false);
+            _.each(this.model.get('_items'), function(item, index) {
+                if(item.type != "dropzone") return;
+                var correctSelection = this.ddController.draggerCorrect(item.id);
+                if(correctSelection) {
+                    this.model.set('_isAtLeastOneCorrectSelection', true);
+                }
+                callback(correctSelection, item);
+            }, this);
+        },
+
+        markQuestion: function() {
+            this.forEachAnswer(function(correct, item) {
+                item.correct = correct;
+            });
+            QuestionView.prototype.markQuestion.apply(this);
+        },
+
         setResetButtonEnabled: function(enabled) {
             this.$('.button.reset').toggleClass('disabled', !enabled);
         },
 
         onSubmitClicked: function(event) {
-            QuestionView.prototype.onSubmitClicked.apply(this, arguments);
 
             if (this.canSubmit()) {
                this.ddController.submit();
+                QuestionView.prototype.onSubmitClicked.apply(this, arguments);
+
                this.model.set('_numberOfCorrectAnswers',this.ddController.correctItems());
                this.setResetButtonEnabled(!this.model.get('_isComplete'));
             }

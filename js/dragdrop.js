@@ -575,6 +575,38 @@
 
     };
 
+    DragDropController.prototype.draggerCorrect = function(id)
+    {
+        var self = this;
+        var isCorrect = false;
+
+        $.each(self.allZones,function(){
+            if(("#"+id) != this.targetId) return;
+
+            if(this.$tgt.hasClass(this.correctClass))
+                isCorrect = true;
+        });
+
+        return isCorrect
+
+    };
+
+    DragDropController.prototype.canSubmit = function()
+    {
+        var self = this;
+
+        var can = true;
+
+        $.each(self.allZones,function(){
+            if(!this.currentDragger)
+                can = false;
+        });
+
+        return can;
+
+    };
+
+
     DragDropController.INACTIVE_BUTTON_CLASS = "inactive-but";
 
 

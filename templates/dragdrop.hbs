@@ -2,7 +2,7 @@
     {{> component this}}
    <div class="dragdrop-widget component-widget {{#unless _isEnabled}} disabled {{#if _isComplete}} complete submitted user {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
     	
-    	<div class="dragdrop-container">
+    	<div id="{{LESS.DEFAULT_BOUNDS}}" class="dragdrop-container">
     		
     	<img class="dragdrop-background" src="{{_background.image}}" width="100%" height="auto">	
     	{{#each _items}}
