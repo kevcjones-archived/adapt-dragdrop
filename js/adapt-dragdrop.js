@@ -43,13 +43,17 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
             //HOOK UP
             this.onScreenSizeChanged();
 
-            DragDropHelper.Dragger.DEFAULT_BOUNDS = "#wrapper";
-            DragDropHelper.Dragger.DEFAULT_DRAGGING_CLASS = "ddd-dragging-s1";
-            DragDropHelper.Dragger.DEFAULT_PLACED_CLASS = "ddd-placed-s1";
+            var lessAttribs = this.model.get("LESS");
 
-            DragDropHelper.DropZone.DEFAULT_NEUTRAL_CLASS =  "neutraldropzone-s1";
-            DragDropHelper.DropZone.DEFAULT_CORRECT_CLASS =  "correctdropzone-s1";
-            DragDropHelper.DropZone.DEFAULT_INCORRECT_CLASS =  "incorrectdropzone-s1";
+            DragDropHelper.Dragger.DEFAULT_BOUNDS = lessAttribs.DEFAULT_BOUNDS;//"#wrapper";
+            DragDropHelper.Dragger.DEFAULT_DRAGGING_CLASS = lessAttribs.DEFAULT_DRAGGING_CLASS;//"ddd-dragging-s1";
+            DragDropHelper.Dragger.DEFAULT_PLACED_CLASS = lessAttribs.DEFAULT_PLACED_CLASS;//"ddd-placed-s1";
+
+            DragDropHelper.DropZone.DEFAULT_NEUTRAL_CLASS =  lessAttribs.DEFAULT_NEUTRAL_CLASS;//"neutraldropzone-s1";
+            DragDropHelper.DropZone.DEFAULT_CORRECT_CLASS =  lessAttribs.DEFAULT_CORRECT_CLASS;//"correctdropzone-s1";
+            DragDropHelper.DropZone.DEFAULT_INCORRECT_CLASS =  lessAttribs.DEFAULT_INCORRECT_CLASS;//"incorrectdropzone-s1";
+
+            DragDropHelper.ControllerFactory.INACTIVE_BUTTON_CLASS = lessAttribs.INACTIVE_BUTTON_CLASS;//"inactive-but";
 
             var masterDragList = [];
             var draggerDictionary = {};
@@ -84,7 +88,7 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
                 }
             });
 
-            DragDropHelper.ControllerFactory.INACTIVE_BUTTON_CLASS = "inactive-but";
+            
 
             this.ddController = DragDropHelper.ControllerFactory({
                 $resetButton : null,
@@ -165,8 +169,17 @@ define(["coreViews/questionView", "coreJS/adapt","./jquery-ui.js","./jquery.ui.t
 
             if (this.canSubmit()) {
                this.ddController.submit();
+               this.model.set('_numberOfCorrectAnswers',this.ddController.correctItems());
                this.setResetButtonEnabled(!this.model.get('_isComplete'));
             }
+        },
+
+        isCorrect: function() {
+            return !!Math.floor(this.model.get('_numberOfCorrectAnswers') / this.ddController.allZones.length);
+        },
+        
+        isPartlyCorrect: function() {
+            return !this.isCorrect() && this.model.get('_isAtLeastOneCorrectSelection');
         },
 
         onModelAnswerShown: function() {

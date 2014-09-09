@@ -563,6 +563,18 @@
 
     };
 
+    DragDropController.prototype.correctItems = function()
+    {
+        var self = this;
+        var correctCount = 0;
+
+        $.each(self.allZones,function(){
+            if(this.$tgt.hasClass(this.correctClass))
+                correctCount++;
+        });
+
+    };
+
     DragDropController.INACTIVE_BUTTON_CLASS = "inactive-but";
 
 
