@@ -5,14 +5,104 @@
     "_component":"dragdrop",
     "_classes":"",
     "_layout":"left",
-    "title":"Our first look at a component",
-    "displayTitle":"Our first look at a component",
-    "body":"This component you're reading is a text component. All components take this form of a title and body - except a blank component. However it's important to realise that title and body attributes are not needed. <br><br>Take for instance the media component opposite or below on a smaller device - has no body attribute. Instead of the HTML being rendered Adapt simply doesn't render it. The title attribute is simply a break tag to push the media component level with the opposite component.",
-    "instruction":""
+    "_attempts": 2,
+    "_questionWeight":10,
+    "title": "Drag Drop Demo",
+    "displayTitle": "Demo of dragdrop widget",
+    "body": "Drag the items below into the correct slots",
+    "instruction":"",
     "_buttons":{
         "submit":"Submit",
-        "reset":"",
-        "showCorrectAnswer":"",
-        "hideCorrectAnswer":""
+        "reset":"Reset",
+        "showCorrectAnswer":"Model Answer",
+        "hideCorrectAnswer":"Your Answer"
     },
+    "_feedback": {
+        "correct": "This feedback will appear if you answered the question correctly.",
+        "_incorrect": {
+            "notFinal": "This feedback will appear if you answered part of the question correctly.",
+            "final": "This feedback will appear if you answered the question incorrectly."
+        },
+        "_partlyCorrect": {
+            "notFinal": "This feedback will appear if you answered part of the question correctly.",
+            "final": "This feedback will appear if you answered part of the question correctly."
+        }
+    },
+    "_draggableItems": [
+        {
+            "id" : "draggerA",
+            "class":"",
+            "innnerBody" : "<div>A</div>"
+        },
+        {
+            "id" : "draggerB",
+            "class":"",
+            "innnerBody" : "<div>B</div>"
+        },
+        {
+            "id" : "draggerC",
+            "class":"",
+            "innnerBody" : "<div>C</div>"
+        }
+    ],
+    "_items": [
+        {
+            "id":"dropperA",
+            "class":"",
+            "innnerBody": "",
+            "_accepted": [
+                {
+                    "id": "draggerA",
+                    "_isCorrect": true
+                },
+                {
+                    "text": "draggerB",
+                    "_isCorrect": false
+                },
+                {
+                    "text": "draggerC",
+                    "_isCorrect": false
+                }
+            ]
+        },
+        {
+            "id":"dropperB",
+            "class":"",
+            "innnerBody": "",
+            "_accepted": [
+                {
+                    "id": "draggerA",
+                    "_isCorrect": false
+                },
+                {
+                    "text": "draggerB",
+                    "_isCorrect": true
+                },
+                {
+                    "text": "draggerC",
+                    "_isCorrect": false
+                }
+            ]
+        },
+        {
+            "id":"dropperC",
+            "class":"",
+            "innnerBody": "",
+            "_accepted": [
+                {
+                    "id": "draggerA",
+                    "_isCorrect": false
+                },
+                {
+                    "text": "draggerB",
+                    "_isCorrect": false
+                },
+                {
+                    "text": "draggerC",
+                    "_isCorrect": true
+                }
+            ]
+        },
+
+    ]
 }
