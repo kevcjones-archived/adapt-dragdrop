@@ -75,11 +75,11 @@
                     "_isCorrect": false
                 },
                 {
-                    "text": "draggerB",
+                    "id": "draggerB",
                     "_isCorrect": true
                 },
                 {
-                    "text": "draggerC",
+                    "id": "draggerC",
                     "_isCorrect": false
                 }
             ]

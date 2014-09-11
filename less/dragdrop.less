@@ -1,32 +1,46 @@
 .dragdrop-component {
     .dragdrop-widget {
 
-        position: relative;  
+        
 
-        background-color:#eee;
+        .dragdrop-container {
+            position: relative;
+            width: 100%;
+            height: 100%;       
 
-        .dragdrop-container {		
-        	background-color:#aaa;
-            position:relative;
-        	
+            .dragdrop-background {
+                float: left;
+            }
 
-    		width:100%;
-    		height:100%;
-    		top:0px;
+            .ui-dragdrop-item {
+                position:absolute;
+                &.ui-droppable { 
+                    background-color : #777;
+                    padding : 5px;  
+                    
+                    &.ui-droppable.ui-state-highlight { 
+                        background-color : #999;
+                    }
 
+                    &.ui-droppable.ui-state-hover { 
+                        background-color : #ddd;
+                    }
 
+                    &.ui-droppable.ui-state-active { 
+                        background-color : #777;
+                        border : 1px dashed red;
+                    }          
+                }
 
-        	.dragdrop-item {
-        		position:absolute;
-                background-repeat:no-repeat;
+                &.ui-draggable { 
+                    background-color : #447;
+                    padding : 5px;
+                }
+            }
 
+            
 
-        		&.dragger {
-        		}
-        		&.dropzone {
-        		}
-        	}
-	        
-        }    
+            
+        }
     }
 }
