@@ -6,11 +6,19 @@
         .dragdrop-container {
             position: relative;
             width: 100%;
-            height: 100%;       
+            height: 100%;     
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;  
 
             .dragdrop-background {
                 float: left;
             }
+
+
 
             .ui-dragdrop-item {
                 position:absolute;
@@ -18,23 +26,39 @@
                     background-color : #777;
                     padding : 5px;  
                     
-                    &.ui-droppable.ui-state-highlight { 
+                    &.ui-state-highlight { 
                         background-color : #999;
+                        &.correct {
+                            background-color : green;
+                        }
+                        &.incorrect {
+                            background-color : red;
+                        }
                     }
 
-                    &.ui-droppable.ui-state-hover { 
+                    &.ui-state-hover { 
                         background-color : #ddd;
                     }
 
-                    &.ui-droppable.ui-state-active { 
+                    &.ui-state-active { 
                         background-color : #777;
                         border : 1px dashed red;
                     }          
                 }
 
                 &.ui-draggable { 
+                    cursor: pointer;
                     background-color : #447;
                     padding : 5px;
+
+                    &.ui-draggable-disabled{
+                        cursor: not-allowed;
+                    }
+
+                    &.ui-state-placed { 
+                         border : 1px dashed blue;
+                         background-color: transparent;
+                    }
                 }
             }
 

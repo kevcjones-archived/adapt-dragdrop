@@ -1,10 +1,8 @@
 {
-    "_id":"c-05",
-    "_parentId":"b-05",
     "_type":"component",
     "_component":"dragdrop",
     "_classes":"",
-    "_layout":"left",
+    "_layout":"full",
     "_attempts": 2,
     "_questionWeight":10,
     "title": "Drag Drop Demo",
@@ -28,47 +26,48 @@
             "final": "This feedback will appear if you answered part of the question correctly."
         }
     },
+    "_background" : "<img src='http://placehold.it/800x600' width='100%' height='auto'>",
     "_draggableItems": [
         {
             "id" : "draggerA",
-            "class":"",
-            "innnerBody" : "<div>A</div>"
+            "class":"draggable-01",
+            "innerBody" : "<div>A</div>"
         },
         {
             "id" : "draggerB",
-            "class":"",
-            "innnerBody" : "<div>B</div>"
+            "class":"draggable-01",
+            "innerBody" : "<div>B</div>"
         },
         {
             "id" : "draggerC",
-            "class":"",
-            "innnerBody" : "<div>C</div>"
+            "class":"draggable-01",
+            "innerBody" : "<div>C</div>"
         }
     ],
     "_items": [
         {
             "id":"dropperA",
-            "class":"",
-            "innnerBody": "",
+            "class":"dropzone-01",
+            "innerBody": "",
             "_accepted": [
                 {
                     "id": "draggerA",
                     "_isCorrect": true
                 },
                 {
-                    "text": "draggerB",
+                    "id": "draggerB",
                     "_isCorrect": false
                 },
                 {
-                    "text": "draggerC",
+                    "id": "draggerC",
                     "_isCorrect": false
                 }
             ]
         },
         {
             "id":"dropperB",
-            "class":"",
-            "innnerBody": "",
+            "class":"dropzone-01",
+            "innerBody": "",
             "_accepted": [
                 {
                     "id": "draggerA",
@@ -86,23 +85,24 @@
         },
         {
             "id":"dropperC",
-            "class":"",
-            "innnerBody": "",
+            "class":"dropzone-01",
+            "innerBody": "",
             "_accepted": [
                 {
                     "id": "draggerA",
                     "_isCorrect": false
                 },
                 {
-                    "text": "draggerB",
+                    "id": "draggerB",
                     "_isCorrect": false
                 },
                 {
-                    "text": "draggerC",
+                    "id": "draggerC",
                     "_isCorrect": true
                 }
             ]
-        },
+        }
 
     ]
+
 }
