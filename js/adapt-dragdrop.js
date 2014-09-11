@@ -265,7 +265,7 @@ define(function(require) {
                         revert the dropper in it
                         and tell the dropper that it should be to go to it
             */
-            alert("TODO : SHOW the model answer");
+            alert("TODO : SHOW the model answer " + this.model.get('_userAnswer'));
 
             _.each(this.model.get('_items'), function(item, index) {
 
