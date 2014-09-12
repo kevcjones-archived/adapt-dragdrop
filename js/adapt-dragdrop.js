@@ -13,21 +13,60 @@ define(function(require) {
     var DragDrop = QuestionView.extend({
 
         events: {
-            "dragcreate .ui-draggable"         : "onCreateDragItem",
-            "dragstart .ui-draggable"         : "onStartDragItem",
-            "dragstop .ui-draggable"         : "onStopDragItem",
-            "dropactivate .ui-droppable"   : "onDropItemActivate",                     //Triggered when an accepted draggable starts dragging.  function( event, ui ) {} );
-            "dropdeactivate .ui-droppable" : "onDropItemDeactivate",                   //Triggered when an accepted draggable stops dragging. $( ".selector" ).on( "dropdeactivate", function( event, ui ) {} );
-            "drop .ui-droppable"           : "onDropItem",                             //Triggered when an accepted draggable is dropped on the droppable  $( ".selector" ).on( "drop", function( event, ui ) {} );
-            "dropout .ui-droppable"            : "onDropOutItem",                          //Triggered when an accepted draggable is dragged out of the droppable   $( ".selector" ).on( "dropout", function( event, ui ) {} );
-            "dropover .ui-droppable"           : "onDropOverItem",                         //Triggered when an accepted draggable is dragged over the droppable  $( ".selector" ).on( "dropover", function( event, ui ) {} );
+            "dragcreate .ui-draggable"          : "onCreateDragItem",
+            "dragstart .ui-draggable"           : "onStartDragItem",
+            "dragstop .ui-draggable"            : "onStopDragItem",
+            "dropactivate .ui-droppable"        : "onDropItemActivate",                     //Triggered when an accepted draggable starts dragging.  function( event, ui ) {} );
+            "dropdeactivate .ui-droppable"      : "onDropItemDeactivate",                   //Triggered when an accepted draggable stops dragging. $( ".selector" ).on( "dropdeactivate", function( event, ui ) {} );
+            "drop .ui-droppable"                : "onDropItem",                             //Triggered when an accepted draggable is dropped on the droppable  $( ".selector" ).on( "drop", function( event, ui ) {} );
+            "dropout .ui-droppable"             : "onDropOutItem",                          //Triggered when an accepted draggable is dragged out of the droppable   $( ".selector" ).on( "dropout", function( event, ui ) {} );
+            "dropover .ui-droppable"            : "onDropOverItem",                         //Triggered when an accepted draggable is dragged over the droppable  $( ".selector" ).on( "dropover", function( event, ui ) {} );
 
             "click .dragdrop-widget .button.submit" : "onSubmitClicked",
             "click .dragdrop-widget .button.reset"  : "onResetClicked",
             "click .dragdrop-widget .button.model"  : "onModelAnswerClicked",
-            "click .dragdrop-widget .button.user"   : "onUserAnswerClicked",
+            "click .dragdrop-widget .button.user"   : "onUserAnswerClicked"
 
         },
+
+        preRender:function(){
+            QuestionView.prototype.preRender.apply(this);
+
+            //this.listenTo(Adapt, 'device:changed', this.reRender, this);  
+            $(window).on("resize",this.reRender.bind(this)) ;     
+        },   
+
+        postRender: function() {
+            QuestionView.prototype.postRender.apply(this);
+
+            this.initDragDropItems();
+
+            // $(this.el).find(".dragdrop-background")
+            //     .css("width",this.model.get('_originalWidth')+"px")
+            //     .css("height",this.model.get('_originalHeight')+"px")
+
+            //this.reRender();
+
+            this.setReadyStatus();
+        }, 
+
+        reRender: function() {
+            var placedDraggables = [];
+            _.each(this.model.get('_items'),function(item){
+                if(item.currentDraggableId)
+                {
+                    placedDraggables.push(item.currentDraggableId);
+                    this.moveDraggableToDroppable($('#'+item.currentDraggableId),$('#'+item.id),true)
+                }
+            },this);
+
+             _.each(this.model.get('_draggableItems'),function(item){
+                if(placedDraggables.indexOf(item.id) == -1)
+                {
+                    this.revert($('#'+item.id),true);
+                }
+            },this);
+        },  
 
         initDragDropItems : function () {
             
@@ -46,8 +85,49 @@ define(function(require) {
         },
 
         onCreateDragItem : function( event, ui) {
-            $(event.target).data("original-left",$(event.target).css('left'));
-            $(event.target).data("original-top",$(event.target).css('top'));
+
+            this.setOriginals($(event.target));
+
+        },
+
+        setOriginals : function($draggable) {
+
+            var originalWidth   = $draggable.parent().width();
+            var originalHeight  = $draggable.parent().height();
+            var percent;
+            var right,left = parseFloat($draggable.css('left'));
+            if(!left || (left === 'auto')){
+
+                right = parseFloat($draggable.css('right'));
+                percent = ((right/originalWidth));
+                $draggable.data("original-right",percent);
+            }else
+            {
+                percent = ((left/originalWidth));
+                $draggable.data("original-left",percent);
+            }
+
+            var bottom,top = parseFloat($draggable.css('top'));
+            if(!top || (top === 'auto')){
+                bottom = parseFloat($draggable.css('bottom'));
+                percent = ((bottom/originalHeight));
+                $draggable.data("original-bottom",percent);
+            }else
+            {
+                percent = ((top/originalHeight));
+                $draggable.data("original-top",percent);
+            }
+
+            if((!top || (top === 'auto')) && (!bottom || (bottom === 'auto')))
+                throw new Error("DragDrop Component Error : Your draggable items must be positioned using top or bottom");
+
+            if((!left || (left === 'auto')) && (!right || (right === 'auto')))
+                throw new Error("DragDrop Component Error : Your draggable items must be positioned using left or right");
+
+        },
+
+        reCalculateOriginals : function($draggable) {
+
         },
 
         onStartDragItem : function(event,ui) {
@@ -68,15 +148,39 @@ define(function(require) {
         },
 
 
-        revert: function($d) {
+        revert: function($d,instant) {
             
+            instant = instant || false;
             $d.removeClass('ui-state-placed');
-            $d.animate({
-                    "left":$d.data('original-left'),
-                    "top":$d.data('original-top'),
-                },500,function(){
 
-            });
+
+            var wasRight = false;
+            //calculate left and top from original
+            var left = $d.data('original-left');
+            if((!left)||(left == 'auto')){
+                left = 1.0 - $d.data('original-right');
+                wasRight = true;
+            }
+                
+            var wasBottom = false;
+            var top = $d.data('original-top');
+            if((!top)||(top == 'auto')){
+                top = 1.0 - $d.data('original-bottom') ;//$d.data('original-bottom')$d.parent().height() - parseInt($d.data('original-bottom')) - $d.height();
+                wasBottom = true;
+            }
+
+            if(!instant)
+                $d.animate({
+                        "left":(left * $d.parent().width()) - (wasRight?$d.outerWidth():0),
+                        "top":(top * $d.parent().height()) - (wasBottom?$d.outerHeight():0)
+                    },500,function(){
+
+                });
+            else{
+                $d.css("left",(left * $d.parent().width()) - (wasRight?$d.outerWidth():0)),
+                $d.css("top",(top * $d.parent().height()) - (wasBottom?$d.outerHeight():0))
+           }
+                
         },
 
         onDropItemActivate : function( event, ui ) {
@@ -94,18 +198,41 @@ define(function(require) {
             var $droppable = $(event.target);
             var droppableItem = this.findDroppableItem($droppable.attr("id"));
             //console.log("Deactivate " + droppableItem.id)
-
         },
 
-        moveDraggableToDroppable: function($draggable,$droppable){
-            $draggable.animate({
-                left: $droppable.css('left'),
-                top: $droppable.css('top')
-            },500,function(){
-                //set position to droppable position complete
+        moveDraggableToDroppable: function($draggable,$droppable,instant){
+            
+            instant = instant || false;
+            var left = $droppable.css('left');
+            if(!left || (left ==='auto')) //then right?
+            {
+                var right = $droppable.css('right');
+                if(right)
+                    left = $droppable.parent().width() - parseInt(right) - $droppable.outerWidth() ;
+            }
+
+            var top = $droppable.css('top');
+            if(!top || (top ==='auto')) //then right?
+            {
+                var bottom = $droppable.css('bottom');
+                if(bottom)
+                    top = $droppable.parent().height() - parseInt(bottom) - $droppable.outerHeight() ;
+            }
+
+            if(!instant)
+                $draggable.animate({
+                    left: left,
+                    top: top
+                },500,function(){
+                    //set position to droppable position complete
 
 
-            });
+                });
+            else
+            {
+                $draggable.css('left',left);
+                $draggable.css('top',top);
+            }
         },
 
         onDropItem : function( event, ui ) {
@@ -178,19 +305,7 @@ define(function(require) {
             });
         },
 
-        preRender:function(){
-            QuestionView.prototype.preRender.apply(this);
 
-            //TO DO hook up the drag and drop based on model
-        },   
-
-        postRender: function() {
-            QuestionView.prototype.postRender.apply(this);
-
-            this.initDragDropItems();
-
-            this.setReadyStatus();
-        },   
 
         /*
         Look at all droppables and if one does not contain a highlight class then its fair to assume we have not completed the excercise
