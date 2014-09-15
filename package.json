@@ -1,6 +1,6 @@
 {
   "name": "adapt-dragdrop",
-  "version": "0.0.1",
+  "version": "0.9.1",
   "description": "Pulling in a drag and drop interactive from the older elearning content we used to make... and improving it since it was never responsive",
   "main": "",
   "scripts": {
