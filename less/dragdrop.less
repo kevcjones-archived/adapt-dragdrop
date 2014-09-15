@@ -1,33 +1,266 @@
-.dragdrop-component {
-    .dragdrop-widget {
+.dragdrop-noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.dragdrop-borderbox {
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    /* Opera/IE 8+ */
+}
 
-        position: relative;  
+/*
+A general guide to this CSS - while i learn a little more about LESS i've chosen personal preference over
+what i imagine best practice. Adding 100's of media query inlines makes things very hard to read... i also
+go from big to small. This is how i work... you can change up if you.
 
-        background-color:#eee;
+Usage expectations: 
 
-        .dragdrop-container {		
-        	background-color:#aaa;
-            position:relative;
-        	
-        	.draggable-content{
-        		position:absolute;
-        		width:100%;
-        		height:100%;
-        		top:0px;
+This is the an example component style. Copy and paste below into somewhere in your code where it can be picked up 
+by your Gruntfile. I personally extend the the Grunt file to pick up LESS files in my course folder. So i 
+override the defaults and extend as i see fit.
 
 
 
-	        	.dragdrop-item {
-	        		position:absolute;
-                    background-repeat:no-repeat;
 
 
-	        		&.dragger {
-	        		}
-	        		&.dropzone {
-	        		}
-	        	}
-	        }
-        }    
+           ___       ________  ________  ________  _______      
+          |\  \     |\   __  \|\   __  \|\   ____\|\  ___ \     
+          \ \  \    \ \  \|\  \ \  \|\  \ \  \___|\ \   __/|    
+           \ \  \    \ \   __  \ \   _  _\ \  \  __\ \  \_|/__  
+            \ \  \____\ \  \ \  \ \  \\  \\ \  \|\  \ \  \_|\ \ 
+             \ \_______\ \__\ \__\ \__\\ _\\ \_______\ \_______\
+              \|_______|\|__|\|__|\|__|\|__|\|_______|\|_______|
+                                                                
+*/
+.dragdrop-container {
+    /** Container core */
+    .dragdrop-noselect;
+    display: block;
+    position: relative;
+    width: @device-width-large;
+    margin: 0 auto;
+    height: 650px;
+    background-color: @secondary-color;
+
+    /**
+    Background - depends on what you pu into the background body for that
+    */
+    .dragdrop-background {
+        //Custom Background CSS here
+    }
+
+    .ui-dragdrop-item {
+        position: absolute;
+        &.ui-droppable {
+            /** Global Droppable Styles - Delete if you don't need*/
+            &.ui-state-highlight {
+                &.correct {} &.incorrect {}
+            }
+            &.ui-state-hover {} &.ui-state-active {}
+            /** End of Global Droppable Styles*/
+            
+
+            /** Specific Implementation Styles **/
+
+            //e.g. &.dragger-classname{ &#dragger-id { ... ]}}
+            
+        }
+        &.ui-draggable {
+            /*Global Draggable Style Overrides Here - Warning - Changes in your own of these will apply globally to your module*/
+            
+            .dragdrop-borderbox;
+            cursor: pointer;
+            background-color: #fff;
+
+            &.ui-draggable-disabled {
+                cursor: not-allowed;
+            }
+            &.ui-state-placed {
+                background-color: #ddd;
+            }
+            /** End of Global */
+            
+
+            /*Specific Implementations overrides - This is where you can target either by class id or both depending on your needs*/
+            //e.g. &.dropzone-class { &#dropzone-id}
+        }
+    }
+}
+/*
+           _____ ______   _______   ________  ___  ___  ___  _____ ______      
+          |\   _ \  _   \|\  ___ \ |\   ___ \|\  \|\  \|\  \|\   _ \  _   \    
+          \ \  \\\__\ \  \ \   __/|\ \  \_|\ \ \  \ \  \\\  \ \  \\\__\ \  \   
+           \ \  \\|__| \  \ \  \_|/_\ \  \ \\ \ \  \ \  \\\  \ \  \\|__| \  \  
+            \ \  \    \ \  \ \  \_|\ \ \  \_\\ \ \  \ \  \\\  \ \  \    \ \  \ 
+             \ \__\    \ \__\ \_______\ \_______\ \__\ \_______\ \__\    \ \__\
+              \|__|     \|__|\|_______|\|_______|\|__|\|_______|\|__|     \|__|
+*/
+
+@media all and (max-width: @device-width-large) and (min-width: (@device-width-medium)) {
+    .dragdrop-container {
+        width: @device-width-medium;
+        height: 450px;
+
+        .dragdrop-background {
+            .bg-item {
+                font-size: 1.2em;
+                &.bg-item-1 {} &.bg-item-2 {} &.bg-item-3 {}
+            }
+        }
+        .ui-dragdrop-item {
+            &.ui-droppable {
+                /** Global Droppable Styles - Delete if you don't need*/
+                &.ui-state-highlight {
+                    &.correct {} &.incorrect {}
+                }
+                &.ui-state-hover {} &.ui-state-active {}
+                /** End of Global Droppable Styles*/
+                /** Specific Implementation Styles **/
+                &.dropzone-01 {
+                    &.ui-state-highlight {
+                        &.correct {} &.incorrect {}
+                    }
+                    &.ui-state-hover {} &.ui-state-active {} &#dropperA {} &#dropperB {} &#dropperC {}
+                }
+            }
+            &.ui-draggable {
+                /*Global Draggable Style Overrides Here - Warning - Changes in your own of these will apply globally to your module*/
+                &.ui-draggable-disabled {} &.ui-state-placed {}
+                /** End of Global */
+                /* Specific Implementations overrides - This is where you can target either by class id or both depending on your needs*/
+                &.draggable-01 {
+                    font-size: 1.5em;
+                    /** Disabled from dragging styles */
+                    &.ui-draggable-disabled {}
+                    /** Placed in droppable area styles */
+                    &.ui-state-placed {}
+                    /** Specific ID targeted styles for the draggable elements*/
+                    &#draggerA {} &#draggerB {} &#draggerC {}
+                }
+            }
+        }
+    }
+}
+/*
+           ________  _____ ______   ________  ___       ___          
+          |\   ____\|\   _ \  _   \|\   __  \|\  \     |\  \         
+          \ \  \___|\ \  \\\__\ \  \ \  \|\  \ \  \    \ \  \        
+           \ \_____  \ \  \\|__| \  \ \   __  \ \  \    \ \  \       
+            \|____|\  \ \  \    \ \  \ \  \ \  \ \  \____\ \  \____  
+              ____\_\  \ \__\    \ \__\ \__\ \__\ \_______\ \_______\
+             |\_________\|__|     \|__|\|__|\|__|\|_______|\|_______|
+             \|_________|                                            
+*/
+@media all and (max-width: @device-width-medium) and (min-width: (@device-width-small)) {
+    .dragdrop-container {
+        width: @device-width-small;
+        height: 450px;
+        .dragdrop-background {
+            .bg-item {
+                font-size: 1.0em;
+                &.bg-item-1 {} &.bg-item-2 {} &.bg-item-3 {}
+            }
+        }
+        .ui-dragdrop-item {
+            &.ui-droppable {
+                /** Global Droppable Styles - Delete if you don't need*/
+                &.ui-state-highlight {
+                    &.correct {} &.incorrect {}
+                }
+                &.ui-state-hover {} &.ui-state-active {}
+                /** End of Global Droppable Styles*/
+                /** Specific Implementation Styles **/
+                &.dropzone-01 {
+                    &.ui-state-highlight {
+                        &.correct {} &.incorrect {}
+                    }
+                    &.ui-state-hover {} &.ui-state-active {} &#dropperA {} &#dropperB {} &#dropperC {}
+                }
+            }
+            &.ui-draggable {
+                /*Global Draggable Style Overrides Here - Warning - Changes in your own of these will apply globally to your module*/
+                &.ui-draggable-disabled {} &.ui-state-placed {}
+                /** End of Global */
+                /* Specific Implementations overrides - This is where you can target either by class id or both depending on your needs*/
+                &.draggable-01 {
+                    font-size: 1.2em;
+                    /** Disabled from dragging styles */
+                    &.ui-draggable-disabled {}
+                    /** Placed in droppable area styles */
+                    &.ui-state-placed {}
+                    /** Specific ID targeted styles for the draggable elements*/
+                    &#draggerA {} &#draggerB {} &#draggerC {}
+                }
+            }
+        }
+    }
+}
+
+
+/*
+        ___    ___ ________  _____ ______   ________  ___       ___          
+       |\  \  /  /|\   ____\|\   _ \  _   \|\   __  \|\  \     |\  \         
+       \ \  \/  / | \  \___|\ \  \\\__\ \  \ \  \|\  \ \  \    \ \  \        
+        \ \    / / \ \_____  \ \  \\|__| \  \ \   __  \ \  \    \ \  \       
+         /     \/   \|____|\  \ \  \    \ \  \ \  \ \  \ \  \____\ \  \____  
+        /  /\   \     ____\_\  \ \__\    \ \__\ \__\ \__\ \_______\ \_______\
+       /__/ /\ __\   |\_________\|__|     \|__|\|__|\|__|\|_______|\|_______|
+       |__|/ \|__|   \|_________|                                            
+                                                                             
+                                                                                                                              
+*/
+@media all and (max-width: (@device-width-small - 1px)) {
+    .dragdrop-container {
+        width: 100%;
+        height: 450px;
+        .dragdrop-background {
+            .bg-item {
+                font-size: 0.7em;
+                padding: 1.3em 0.5em;
+                &.bg-item-1 {} &.bg-item-2 {} &.bg-item-3 {}
+            }
+        }
+        .ui-dragdrop-item {
+            &.ui-droppable {
+                /** Global Droppable Styles - Delete if you don't need*/
+                &.ui-state-highlight {
+                    &.correct {} &.incorrect {}
+                }
+                &.ui-state-hover {} &.ui-state-active {}
+                /** End of Global Droppable Styles*/
+                /** Specific Implementation Styles **/
+                &.dropzone-01 {
+                    &.ui-state-highlight {
+                        &.correct {} &.incorrect {}
+                    }
+                    &.ui-state-hover {} &.ui-state-active {} &#dropperA {} &#dropperB {} &#dropperC {}
+                }
+            }
+            &.ui-draggable {
+                /*Global Draggable Style Overrides Here - Warning - Changes in your own of these will apply globally to your module*/
+                &.ui-draggable-disabled {} &.ui-state-placed {}
+                /** End of Global */
+                /* Specific Implementations overrides - This is where you can target either by class id or both depending on your needs*/
+                &.draggable-01 {
+                    font-size: 1.0em;
+                    padding:1.1em;
+                    /** Disabled from dragging styles */
+                    &.ui-draggable-disabled {}
+                    /** Placed in droppable area styles */
+                    &.ui-state-placed {}
+                    /** Specific ID targeted styles for the draggable elements*/
+                    &#draggerA {} 
+                    &#draggerB {} 
+                    &#draggerC {}
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,4 @@
 {
-    "_id":"c-05",
-    "_parentId":"b-05",
     "_type":"component",
     "_component":"dragdrop",
     "_classes":"",
@@ -106,4 +104,8 @@
         }
 
     ]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61d01b6ca67f9a9f1e10f9c510a521e1973f8c61
 }
