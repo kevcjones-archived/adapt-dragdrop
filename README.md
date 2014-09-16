@@ -153,3 +153,7 @@ Future plans
 - adding in background image demo
 
 - create more customisation behaviour via config files
+
+##Browser spec
+
+If you have detailed browser spec you should detail them here.

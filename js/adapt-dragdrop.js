@@ -124,6 +124,8 @@ define(function(require) {
             if((!left || (left === 'auto')) && (!right || (right === 'auto')))
                 throw new Error("DragDrop Component Error : Your draggable items must be positioned using left or right");
 
+            //insta set the left and top so that we can animate without odd skips
+            this.revert($draggable,true);
         },
 
         reCalculateOriginals : function($draggable) {
@@ -225,7 +227,7 @@ define(function(require) {
                     top: top
                 },500,function(){
                     //set position to droppable position complete
-
+                    $draggable.addClass('ui-state-placed');
 
                 });
             else
@@ -253,7 +255,7 @@ define(function(require) {
             //Set the new current id and move the dragger item into final positon
             droppableItem.currentDraggableId = draggableItem.id;
 
-            $draggable.addClass('ui-state-placed');
+            
             this.moveDraggableToDroppable($draggable,$droppable);
             
         },
@@ -413,6 +415,7 @@ define(function(require) {
             */
             //alert("TODO : SHOW the model answer " + this.model.get('_userAnswer'));
 
+            var placedItems = [];
             _.each(this.model.get('_items'), function(item, index) {
                 if(!item._isCorrect)
                 {       
@@ -431,13 +434,28 @@ define(function(require) {
                         $dropzone.addClass(item.correct ? 'correct' : 'incorrect');
 
                         var $correctItem = $("#"+correctItem.id);
+                        placedItems.push(correctItem.id);
                         this.moveDraggableToDroppable($correctItem,$dropzone);
                     }
-                }
+                }else
+                    placedItems.push(item.currentDraggableId);
             }, this);
 
 
+            this.revertLeftOvers(placedItems);
+
+
+
             
+        },
+
+        revertLeftOvers:function(arr)
+        {
+            _.each(this.model.get('_draggableItems'),function(item){
+                if(arr.indexOf(item.id) == -1){
+                    this.revert($("#"+item.id));
+                }
+            },this);
         },
 
         onUserAnswerShown: function(event) {
@@ -452,18 +470,23 @@ define(function(require) {
                             ignore
 
             */
+
+            var placedItems = [];
             _.each(this.model.get('_items'), function(item, i) 
             {
                 var $dropzone = $("#"+item.id);
                 var ansId = this.model.get('_userAnswer')[i];
                 var $userAnswerItem = $("#"+ansId);
                 item.currentDraggableId = ansId;
+                placedItems.push(ansId);
                 item.correct = item._isCorrect;
                 $dropzone.removeClass('correct incorrect');
                 $dropzone.addClass(item.correct ? 'correct' : 'incorrect');
                 this.moveDraggableToDroppable($userAnswerItem,$dropzone);
 
             },this);
+
+            this.revertLeftOvers(placedItems);
 
             
         },
