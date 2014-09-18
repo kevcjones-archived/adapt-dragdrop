@@ -95,34 +95,15 @@ define(function(require) {
             var originalWidth   = $draggable.parent().width();
             var originalHeight  = $draggable.parent().height();
             var percent;
-            var right,left = parseFloat($draggable.css('left'));
-            if(!left || (left === 'auto')){
 
-                right = parseFloat($draggable.css('right'));
-                percent = ((right/originalWidth));
-                $draggable.data("original-right",percent);
-            }else
-            {
-                percent = ((left/originalWidth));
-                $draggable.data("original-left",percent);
-            }
+            var left = $draggable.position().left;
+            percent = (left/originalWidth);
+            $draggable.data("original-left",percent);
 
-            var bottom,top = parseFloat($draggable.css('top'));
-            if(!top || (top === 'auto')){
-                bottom = parseFloat($draggable.css('bottom'));
-                percent = ((bottom/originalHeight));
-                $draggable.data("original-bottom",percent);
-            }else
-            {
-                percent = ((top/originalHeight));
-                $draggable.data("original-top",percent);
-            }
+            var bottom,top = $draggable.position().top;
+            percent = ((top/originalHeight));
+            $draggable.data("original-top",percent);
 
-            if((!top || (top === 'auto')) && (!bottom || (bottom === 'auto')))
-                throw new Error("DragDrop Component Error : Your draggable items must be positioned using top or bottom");
-
-            if((!left || (left === 'auto')) && (!right || (right === 'auto')))
-                throw new Error("DragDrop Component Error : Your draggable items must be positioned using left or right");
 
             //insta set the left and top so that we can animate without odd skips
             this.revert($draggable,true);
@@ -156,31 +137,25 @@ define(function(require) {
             $d.removeClass('ui-state-placed');
 
 
-            var wasRight = false;
             //calculate left and top from original
             var left = $d.data('original-left');
-            if((!left)||(left == 'auto')){
-                left = 1.0 - $d.data('original-right');
-                wasRight = true;
-            }
-                
-            var wasBottom = false;
             var top = $d.data('original-top');
-            if((!top)||(top == 'auto')){
-                top = 1.0 - $d.data('original-bottom') ;//$d.data('original-bottom')$d.parent().height() - parseInt($d.data('original-bottom')) - $d.height();
-                wasBottom = true;
-            }
+
+
+           //alert("top of "+$d.attr('id')+" "+top);
+           var leftToBe = (left * $d.parent().width());
+           var topToBe  = (top * $d.parent().height());
 
             if(!instant)
                 $d.animate({
-                        "left":(left * $d.parent().width()) - (wasRight?$d.outerWidth():0),
-                        "top":(top * $d.parent().height()) - (wasBottom?$d.outerHeight():0)
+                        "left":leftToBe,
+                        "top":topToBe
                     },500,function(){
 
-                });
+                    });
             else{
-                $d.css("left",(left * $d.parent().width()) - (wasRight?$d.outerWidth():0)),
-                $d.css("top",(top * $d.parent().height()) - (wasBottom?$d.outerHeight():0))
+                $d.css("left",leftToBe),
+                $d.css("top",topToBe)
            }
                 
         },
@@ -205,21 +180,8 @@ define(function(require) {
         moveDraggableToDroppable: function($draggable,$droppable,instant){
             
             instant = instant || false;
-            var left = $droppable.css('left');
-            if(!left || (left ==='auto')) //then right?
-            {
-                var right = $droppable.css('right');
-                if(right)
-                    left = $droppable.parent().width() - parseInt(right) - $droppable.outerWidth() ;
-            }
-
-            var top = $droppable.css('top');
-            if(!top || (top ==='auto')) //then right?
-            {
-                var bottom = $droppable.css('bottom');
-                if(bottom)
-                    top = $droppable.parent().height() - parseInt(bottom) - $droppable.outerHeight() ;
-            }
+            var left = $droppable.position().left;
+            var top = $droppable.position().top;
 
             if(!instant)
                 $draggable.animate({
