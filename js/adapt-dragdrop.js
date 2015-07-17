@@ -276,7 +276,7 @@ define(function(require) {
         */
         canSubmit: function() {
           var canSubmit = true;
-          $('.ui-droppable',this.el).each(
+          this.$('.ui-droppable',this.el).each(
             _.bind(function(index, element) {
               var $element = $(element);
               if (!$element.hasClass('ui-state-highlight')) {
@@ -364,7 +364,7 @@ define(function(require) {
         },
 
         setAllItemsEnabled: function(enabled) {
-            $('.ui-draggable').draggable( "option", "disabled",!enabled);
+            this.$('.ui-draggable').draggable( "option", "disabled",!enabled);
         },
 
         onModelAnswerShown: function() {
